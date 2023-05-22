@@ -25,19 +25,28 @@ public class Main  {
     private int W=1000;
     private int H=700;
     public String goal;
+    public JButton toD;
 
 
     public static void main(String[] args) {
         Main myMain=new Main();
         myMain.prepareGUI();
         myMain.showEventDemo();
+        try {
+            myMain.pull();
+        }catch(ParseException x ){
+            System.out.println("it did not work");
+        }
     }
     private void prepareGUI(){
         mainFrame=new JFrame("pokedex");
         mainFrame.setSize(W,H);
         mainFrame.setLayout(new GridLayout(4,1));
        // mainFrame.setVisible(true);
+
     }
+
+
     private void showEventDemo(){
     headerLabel = new JLabel(" enter name");
     ta = new JTextArea();
@@ -51,6 +60,9 @@ public class Main  {
     abilities.add(tc);
     abilities.add(td);
     description= new JTextArea();
+    toD = new JButton("back");
+    toD.setActionCommand("to ditto");
+
 
     mainFrame.add(headerLabel);
     mainFrame.add(info);
@@ -64,33 +76,19 @@ public class Main  {
         public void actionPerformed(ActionEvent e) {
             String command = e.getActionCommand();
 
-//            if (command.equals("OK")) {
-//                statusLabel.setText("Ok Button clicked.");
-//            } else if (command.equals("Submit")) {
+         if (command.equals("to ditto")) {
+            // URL url = new URL("https://pokeapi.co/api/v2/pokemon/ditto");
+             //myMain.showEventDemo();
+             }
+//            } else if (command.equals("to pika")) {
 //                statusLabel.setText("Submit Button clicked.");
 //            } else {
 //                statusLabel.setText("Cancel Button clicked.");
 //            }
         }
     }
-    public class ReadJson {
-        public static void main(String args[]) throws ParseException {
-            // In java JSONObject is used to create JSON object
-            // which is a subclass of java.util.HashMap.
 
-            JSONObject file = new JSONObject();
-            file.put("Full Name", "Ritu Sharma");
-            file.put("Roll No.", new Integer(1704310046));
-            file.put("Tution Fees", new Double(65400));
-
-
-            // To print in JSON format.
-            System.out.print(file.get("Tution Fees"));
-            pull();
-
-        }
-
-        public static void pull() throws ParseException {
+        public  void pull() throws ParseException {
             String output = "abc";
             String totalJson="";
             String goal ="/ditto";
@@ -142,11 +140,14 @@ public class Main  {
                     org.json.simple.JSONObject test2 =(org.json.simple.JSONObject) test.get("ability");
                     String abilityName = (String) test2.get("name");
                     System.out.println(abilityName);
-                    System.out.println(test);
+                    ta.append(abilityName +", ");
+                    //System.out.println(test);
+                    //tb.append(String.valueOf(test));
                     // System.out.println(person.getInt("key"));
                 }
                 long height= (long)jsonObject.get("height");
                 System.out.println("height: "+height);
+                tc.append("height: "+ height);
             }
 
             catch (Exception e) {
@@ -158,4 +159,4 @@ public class Main  {
 
         }
     }
-}
+
