@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BaseMultiResolutionImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,60 +17,102 @@ public class Main  {
     private JFrame mainFrame;
     private JLabel headerLabel;
     public JTextArea ta;
-    private JTextArea tb;
-    private JPanel info;
-    private JTextArea tc;
-    private JTextArea td;
-    private JPanel abilities;
-    private JTextArea description;
+    public JButton next;
+    public JButton back;
+    public JLabel pic;
     private int W=1000;
     private int H=700;
     public String goal;
-    public JButton toD;
+    Main run=new Main();
+
 
 
     public static void main(String[] args) {
-        Main myMain=new Main();
+        Main myMain = new Main();
         myMain.prepareGUI();
         myMain.showEventDemo();
         try {
             myMain.pull();
-        }catch(ParseException x ){
+        } catch (ParseException x) {
             System.out.println("it did not work");
         }
     }
     private void prepareGUI(){
         mainFrame=new JFrame("pokedex");
         mainFrame.setSize(W,H);
-        mainFrame.setLayout(new GridLayout(4,1));
+        mainFrame.setLayout(new BorderLayout());
        // mainFrame.setVisible(true);
 
     }
 
 
     private void showEventDemo(){
-    headerLabel = new JLabel(" enter name");
+        goal="/ditto";
     ta = new JTextArea();
-    tb = new JTextArea();
-    info = new JPanel(new GridLayout(1,2));
-    info.add(ta);
-    info.add(tb);
-    tc = new JTextArea();
-    td = new JTextArea();
-    abilities = new JPanel(new GridLayout(1,2));
-    abilities.add(tc);
-    abilities.add(td);
-    description= new JTextArea();
-    toD = new JButton("back");
-    toD.setActionCommand("to ditto");
+    back = new JButton("back");
+    back.setActionCommand("to charmander");
+    next = new JButton("next");
+    next.setActionCommand("to pikachu");
+    pic = new JLabel(new ImageIcon("ditto.jpeg"));
 
-
-    mainFrame.add(headerLabel);
-    mainFrame.add(info);
-    mainFrame.add(abilities);
-    mainFrame.add(description);
+    //mainFrame.add(headerLabel, BorderLayout.NORTH);
+    mainFrame.add(ta, BorderLayout.CENTER);
+    mainFrame.add(back, BorderLayout.WEST);
+    mainFrame.add(next, BorderLayout.EAST);
+    mainFrame.add(pic, BorderLayout.NORTH);
     mainFrame.setVisible(true);
-    goal = ta.toString();
+
+    }
+    private void showEventDemo2(){
+        goal="/pikachu";
+        ta = new JTextArea();
+        back = new JButton("back");
+        back.setActionCommand("to ditto");
+        next = new JButton("next");
+        next.setActionCommand("to squirtle");
+        pic = new JLabel(new ImageIcon("pikachu.jpeg"));
+
+        //mainFrame.add(headerLabel, BorderLayout.NORTH);
+        mainFrame.add(ta, BorderLayout.CENTER);
+        mainFrame.add(back, BorderLayout.WEST);
+        mainFrame.add(next, BorderLayout.EAST);
+        mainFrame.add(pic, BorderLayout.NORTH);
+        mainFrame.setVisible(true);
+
+    }
+    private void showEventDemo3(){
+        goal="/squirtle";
+        ta = new JTextArea();
+        back = new JButton("back");
+        back.setActionCommand("to pikachu");
+        next = new JButton("next");
+        next.setActionCommand("to charmander");
+        pic = new JLabel(new ImageIcon("squirtle.jpeg"));
+
+        //mainFrame.add(headerLabel, BorderLayout.NORTH);
+        mainFrame.add(ta, BorderLayout.CENTER);
+        mainFrame.add(back, BorderLayout.WEST);
+        mainFrame.add(next, BorderLayout.EAST);
+        mainFrame.add(pic, BorderLayout.NORTH);
+        mainFrame.setVisible(true);
+
+    }
+    private void showEventDemo4(){
+        goal="/charmander";
+        ta = new JTextArea();
+        back = new JButton("back");
+        back.setActionCommand("to squirtle");
+        next = new JButton("next");
+        next.setActionCommand("to ditto");
+        pic = new JLabel(new ImageIcon("charmander.jpeg"));
+
+        //mainFrame.add(headerLabel, BorderLayout.NORTH);
+        mainFrame.add(ta, BorderLayout.CENTER);
+        mainFrame.add(back, BorderLayout.WEST);
+        mainFrame.add(next, BorderLayout.EAST);
+        mainFrame.add(pic, BorderLayout.NORTH);
+        mainFrame.setVisible(true);
+
     }
 
     private class ButtonClickListener implements ActionListener {
@@ -77,21 +120,23 @@ public class Main  {
             String command = e.getActionCommand();
 
          if (command.equals("to ditto")) {
-            // URL url = new URL("https://pokeapi.co/api/v2/pokemon/ditto");
-             //myMain.showEventDemo();
-             }
-//            } else if (command.equals("to pika")) {
-//                statusLabel.setText("Submit Button clicked.");
-//            } else {
-//                statusLabel.setText("Cancel Button clicked.");
-//            }
+             run.showEventDemo();
         }
+            if (command.equals("to pikachu")) {
+               // run.showEventDemo2();
+            }
+            if (command.equals("to squirtle")) {
+              //  run.showEventDemo3();
+            }
+            if (command.equals("to charmander")) {
+                //  run.showEventDemo4();
+            }
     }
+
 
         public  void pull() throws ParseException {
             String output = "abc";
             String totalJson="";
-            String goal ="/ditto";
             try {
 
                 URL url = new URL("https://pokeapi.co/api/v2/pokemon"+ goal);
@@ -131,8 +176,8 @@ public class Main  {
             System.out.println("hey"+jsonObject);
 
             try {
-                System.out.println(jsonObject.get("name"));
-
+                ta.append((String) jsonObject.get("name"));
+                ta.append(": ");
                 org.json.simple.JSONArray msg = (org.json.simple.JSONArray) jsonObject.get("abilities");
                 int n =   msg.size(); //(msg).length();
                 for (int i = 0; i < n; ++i) {
@@ -140,14 +185,14 @@ public class Main  {
                     org.json.simple.JSONObject test2 =(org.json.simple.JSONObject) test.get("ability");
                     String abilityName = (String) test2.get("name");
                     System.out.println(abilityName);
-                    ta.append(abilityName +", ");
+                    ta.append( abilityName +", ");
                     //System.out.println(test);
                     //tb.append(String.valueOf(test));
                     // System.out.println(person.getInt("key"));
                 }
                 long height= (long)jsonObject.get("height");
                 System.out.println("height: "+height);
-                tc.append("height: "+ height);
+                ta.append(" height= "+ height);
             }
 
             catch (Exception e) {
@@ -158,5 +203,5 @@ public class Main  {
 
 
         }
-    }
+    }}
 
