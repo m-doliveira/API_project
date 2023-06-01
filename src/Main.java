@@ -43,7 +43,7 @@ public class Main {
     }
 
     private void prepareGUI() {
-        mainFrame = new JFrame("pokedex");
+        mainFrame = new JFrame("what's for dinner");
         mainFrame.setSize(W, H);
         mainFrame.setLayout(new BorderLayout());
         // mainFrame.setVisible(true);
@@ -61,9 +61,9 @@ public class Main {
         ta = new JTextArea();
         tb = new JTextArea();
         tc = new JTextArea();
-        back = new JButton("back");
+        back = new JButton("refresh");
         back.setActionCommand("to charmander");
-        next = new JButton("next");
+        next = new JButton("accept");
         next.setActionCommand("to pikachu");
         back.addActionListener(new ButtonClickListener());
         next.addActionListener(new ButtonClickListener());
@@ -178,7 +178,27 @@ public class Main {
                 String I_18 =(String) test.get("strIngredient18");
                 String I_19 =(String) test.get("strIngredient19");
                 String I_20 =(String) test.get("strIngredient20");
-                String M_20 =(String) test.get("strMeasure1");//20 of these and they correspond with ingredients by number
+                String M_1 =(String) test.get("strMeasure1");
+                String M_2 =(String) test.get("strMeasure2");
+                String M_3 =(String) test.get("strMeasure3");
+                String M_4 =(String) test.get("strMeasure4");
+                String M_5 =(String) test.get("strMeasure5");
+                String M_6 =(String) test.get("strMeasure6");
+                String M_7 =(String) test.get("strMeasure7");
+                String M_8 =(String) test.get("strMeasure8");
+                String M_9 =(String) test.get("strMeasure9");
+                String M_10 =(String) test.get("strMeasure10");
+                String M_11 =(String) test.get("strMeasure11");
+                String M_12 =(String) test.get("strMeasure12");
+                String M_13 =(String) test.get("strMeasure13");
+                String M_14 =(String) test.get("strMeasure14");
+                String M_15 =(String) test.get("strMeasure15");
+                String M_16 =(String) test.get("strMeasure16");
+                String M_17 =(String) test.get("strMeasure17");
+                String M_18 =(String) test.get("strMeasure18");
+                String M_19 =(String) test.get("strMeasure19");
+                String M_20 =(String) test.get("strMeasure20");
+
 
 
 
@@ -189,14 +209,35 @@ public class Main {
                 BufferedImage image2 = ImageIO.read(url);
                 JLabel label = new JLabel(new ImageIcon(image2));
 
-                mainFrame.add(label);
+               mainFrame.add(label);
+
+
                 mainFrame.setVisible(true);
 
                 System.out.println(mealNum);
                 System.out.println(name);
                 System.out.println(cuisine);
                 System.out.println(steps);
-                System.out.println(I_1);
+                System.out.println(I_1+": "+M_1);
+                System.out.println(I_2+": "+M_2);
+                System.out.println(I_3+": "+M_3);
+                System.out.println(I_4+": "+M_4);
+                System.out.println(I_5+": "+M_5);
+                System.out.println(I_6+": "+M_6);
+                System.out.println(I_7+": "+M_7);
+                System.out.println(I_8+": "+M_8);
+                System.out.println(I_9+": "+M_9);
+                System.out.println(I_10+": "+M_10);
+                System.out.println(I_11+": "+M_11);
+                System.out.println(I_12+": "+M_12);
+                System.out.println(I_13+": "+M_13);
+                System.out.println(I_14+": "+M_14);
+                System.out.println(I_15+": "+M_15);
+                System.out.println(I_16+": "+M_16);
+                System.out.println(I_17+": "+M_17);
+                System.out.println(I_18+": "+M_18);
+                System.out.println(I_19+": "+M_19);
+                System.out.println(I_20+": "+M_20);
                // ta.append( mealNum+", ");
                 //System.out.println(test);
                 //tb.append(String.valueOf(test));
@@ -231,6 +272,7 @@ public class Main {
          }
             if (command.equals("expand")) {
                 ta.append(" ");
+                mainFrame.setVisible(false);
                showEventDemo2();
             }
 
