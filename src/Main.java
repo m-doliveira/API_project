@@ -19,13 +19,14 @@ import javax.imageio.ImageIO;
 public class Main {
     //^add "implements ActionListener"
     private JFrame mainFrame;
+    private JFrame secondFrame;
     private JLabel headerLabel;
     public JTextArea ta;
     public JTextArea tb;
     public JTextArea tc;
     public JButton next;
     public JButton back;
-    public JLabel pic;
+    public JLabel label;
     private int W = 1000;
     private int H = 700;
     public String goal;
@@ -34,73 +35,63 @@ public class Main {
     public static void main(String[] args) {
         Main myMain = new Main();
         myMain.prepareGUI();
-        // myMain.showEventDemo();
-        try {
-            myMain.pull();
-        } catch (ParseException x) {
-            System.out.println("it did not work");
-        }
+        myMain.showEventDemo();
+//        try {
+//            myMain.pull();
+//        } catch (ParseException x) {
+//            System.out.println("it did not work");
+//        }
     }
 
     private void prepareGUI() {
         mainFrame = new JFrame("what's for dinner");
         mainFrame.setSize(W, H);
         mainFrame.setLayout(new BorderLayout());
+
+        secondFrame = new JFrame("what's for dinner");
+        secondFrame.setSize(W, H);
+        secondFrame.setLayout(new GridLayout(1,4));
         // mainFrame.setVisible(true);
 
     }
 
 
     private void showEventDemo() {
-        goal = "/ditto";
         try {
             pull();
         } catch (ParseException x) {
             System.out.println("it did not work");
         }
         ta = new JTextArea();
+        label = new JLabel();
         tb = new JTextArea();
         tc = new JTextArea();
-        back = new JButton("refresh");
-        back.setActionCommand("to charmander");
-        next = new JButton("accept");
-        next.setActionCommand("to pikachu");
+        back = new JButton("something else");
+        back.setActionCommand("refresh");
+        next = new JButton("this one!");
+        next.setActionCommand("expand");
         back.addActionListener(new ButtonClickListener());
         next.addActionListener(new ButtonClickListener());
-        pic = new JLabel(new ImageIcon("ditto.jpeg"));
 
         //mainFrame.add(headerLabel, BorderLayout.NORTH);
-        mainFrame.add(ta, BorderLayout.CENTER);
+        mainFrame.add(ta, BorderLayout.NORTH);
         mainFrame.add(back, BorderLayout.WEST);
         mainFrame.add(next, BorderLayout.EAST);
-        mainFrame.add(pic, BorderLayout.NORTH);
+
+
         mainFrame.setVisible(true);
 
 
     }
 
     private void showEventDemo2() {
-        goal = "/pikachu";
-        try {
-            pull();
-        } catch (ParseException x) {
-            System.out.println("it did not work");
-        }
-        ta = new JTextArea();
-        back = new JButton("back");
-        back.setActionCommand("to ditto");
-        next = new JButton("next");
-        next.setActionCommand("to squirtle");
-        pic = new JLabel(new ImageIcon("pikachu.jpeg"));
-        back.addActionListener(new ButtonClickListener());
-        next.addActionListener(new ButtonClickListener());
-
-        //mainFrame.add(headerLabel, BorderLayout.NORTH);
-        mainFrame.add(ta, BorderLayout.CENTER);
-        mainFrame.add(back, BorderLayout.WEST);
-        mainFrame.add(next, BorderLayout.EAST);
-        mainFrame.add(pic, BorderLayout.NORTH);
-        mainFrame.setVisible(true);
+//        ta = new JTextArea();
+//        tb = new JTextArea();
+//        tc = new JTextArea();
+        secondFrame.add(ta);
+        secondFrame.add(tb);
+        secondFrame.add(tc);
+        secondFrame.setVisible(true);
 
     }
 
@@ -143,7 +134,7 @@ public class Main {
         JSONParser parser = new JSONParser();
         //System.out.println(str);
         org.json.simple.JSONObject jsonObject = (org.json.simple.JSONObject) parser.parse(totalJson);
-        System.out.println(jsonObject);
+       // System.out.println(jsonObject);
 
         try {
           //  ta.append((String) jsonObject.get("meals"));
@@ -152,7 +143,7 @@ public class Main {
 
             int n =   msg.size();
             for (int i = 0; i < n; ++i) {
-                System.out.println(msg.get(i));
+                //System.out.println(msg.get(i));
                 org.json.simple.JSONObject test =(org.json.simple.JSONObject) msg.get(i);
                 String mealNum = (String) test.get("idMeal");
                 String name = (String) test.get("strMeal");
@@ -208,16 +199,20 @@ public class Main {
                 URL url = new URL(path);
                 BufferedImage image2 = ImageIO.read(url);
                 JLabel label = new JLabel(new ImageIcon(image2));
+                JLabel label2 = new JLabel(new ImageIcon(image2));
 
-               mainFrame.add(label);
+                 mainFrame.add(label, BorderLayout.CENTER);
+                 secondFrame.add(label2);
+
+                ta = new JTextArea();
+                tb = new JTextArea();
+                tc = new JTextArea();
 
 
-                mainFrame.setVisible(true);
-
-                System.out.println(mealNum);
-                System.out.println(name);
-                System.out.println(cuisine);
-                System.out.println(steps);
+                System.out.println("meal id: "+mealNum);
+                System.out.println("dish name: "+name);
+                System.out.println("type of cusine: "+cuisine);
+                System.out.println("Ingredients:");
                 System.out.println(I_1+": "+M_1);
                 System.out.println(I_2+": "+M_2);
                 System.out.println(I_3+": "+M_3);
@@ -238,7 +233,10 @@ public class Main {
                 System.out.println(I_18+": "+M_18);
                 System.out.println(I_19+": "+M_19);
                 System.out.println(I_20+": "+M_20);
-               // ta.append( mealNum+", ");
+                System.out.println("instructions: "+steps);
+               ta.append("Recipe number "+ mealNum+": "+name);
+               tc.append("instructions:"+steps);
+               tb.append(I_1+M_1);
                 //System.out.println(test);
                 //tb.append(String.valueOf(test));
                 // System.out.println(person.getInt("key"));
@@ -262,17 +260,18 @@ public class Main {
 
          if (command.equals("refresh")) {
 
-             ta.append(" ");
-             try {
-                 pull();
-                 showEventDemo();
-             } catch (ParseException parseException) {
-                 parseException.printStackTrace();
-             }
+             mainFrame.remove(ta);
+             mainFrame.remove(back);
+             mainFrame.remove(next);
+             mainFrame.remove(label);
+
+             showEventDemo();
+
          }
             if (command.equals("expand")) {
                 ta.append(" ");
                 mainFrame.setVisible(false);
+                secondFrame.setVisible(true);
                showEventDemo2();
             }
 
